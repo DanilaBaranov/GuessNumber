@@ -1,0 +1,6 @@
+﻿Versions:
+
+1.0 - 20.07.2022 21.30
+
+Plans:
+-Add function of saving results to the text file.
