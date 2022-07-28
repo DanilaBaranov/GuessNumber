@@ -1,5 +1,5 @@
 namespace Guess_Number {
-    enum diffs {easy = 1, medium = 2, hard = 3 }
+    enum diffs {Easy = 1, Medium = 2, Hard = 3}
     public partial class Menu : Form {
         public Menu() {
             InitializeComponent();

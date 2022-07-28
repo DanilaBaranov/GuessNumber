@@ -1,6 +1,16 @@
 ﻿Versions:
 
 1.0 - 20.07.2022 21.30
+- Added main game functions.
+- Added 3 difficulties: easy, medium, hard.
+
+1.1 - 28.07.2022 xx.yy
+- Fixed output of "tries(min)" if "score" = 0.
+- Fixed increment score if number is correct.
+- Edited first chars of difficulties in "Menu".
+- Edited output if Game over: added newline.
 
 Plans:
--Add function of saving results to the text file.
+- Add "Enter" functon in number textbox.
+- Add check of try to convert entered number.
+- Add function of saving results to the text file.

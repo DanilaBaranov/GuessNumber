@@ -17,12 +17,14 @@ namespace Guess_Number {
             avg_tries = 0,
             max_tries = 0,
             min_tries = 100,
+            min_tries_tmp = 0,
             
             score = 0,
             
             delta,
             
             win_num;
+
         Random rnd = new Random();
         public Game(int difficulty) {
             InitializeComponent();
@@ -91,6 +93,9 @@ namespace Guess_Number {
                 ++score;
                 lives += delta;
 
+                ++tries_local;
+                ++tries_global;
+
                 max_tries = tries_local > max_tries ? tries_local : max_tries;
                 
                 min_tries = tries_local < min_tries ? tries_local : min_tries;
@@ -135,8 +140,10 @@ namespace Guess_Number {
                 Tries_min_text.Text = min_tries.ToString();
 
             if (lives == 0) {
+                min_tries = min_tries == 100 ? 0 : min_tries;
+
                 MessageBox.Show(
-                    $"You loose. \r\nScore: {score} \r\nLives: {lives} \r\nTries(local): " +
+                    $"You loose. \r\n\r\nScore: {score} \r\nLives: {lives} \r\nTries(local): " +
                     $"{tries_local} \r\nTries(global): {tries_global}" +
                     $"\r\nTries(AVG) {avg_tries} \r\nTries(max) {max_tries} \r\n Tries(min) {min_tries}"
                     ,
