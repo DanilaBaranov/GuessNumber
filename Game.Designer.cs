@@ -110,6 +110,7 @@
             this.Current_Number.Name = "Current_Number";
             this.Current_Number.Size = new System.Drawing.Size(100, 23);
             this.Current_Number.TabIndex = 4;
+            this.Current_Number.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Current_Number_KeyPress);
             // 
             // Update
             // 

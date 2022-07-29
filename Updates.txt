@@ -4,13 +4,15 @@
 - Added main game functions.
 - Added 3 difficulties: easy, medium, hard.
 
-1.1 - 28.07.2022 xx.yy
+1.1 - 28.07.2022 19.30
 - Fixed output of "tries(min)" if "score" = 0.
 - Fixed increment score if number is correct.
 - Edited first chars of difficulties in "Menu".
 - Edited output if Game over: added newline.
 
+1.2 - 29.07.2022 21.20
+- Added "Enter" and "Escape" pushing in "number" and "difficulty" textboxes.
+- Added full check of number type in "number" textbox.
+
 Plans:
-- Add "Enter" functon in number textbox.
-- Add check of try to convert entered number.
 - Add function of saving results to the text file.

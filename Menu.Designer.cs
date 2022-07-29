@@ -72,6 +72,7 @@
             this.Difficulty_Choice.Name = "Difficulty_Choice";
             this.Difficulty_Choice.Size = new System.Drawing.Size(121, 23);
             this.Difficulty_Choice.TabIndex = 2;
+            this.Difficulty_Choice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Difficulty_Choice_KeyPress);
             // 
             // Menu
             // 

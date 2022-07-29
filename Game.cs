@@ -26,6 +26,21 @@ namespace Guess_Number {
             win_num;
 
         Random rnd = new Random();
+
+        private void Current_Number_KeyPress(object sender, KeyPressEventArgs e) {
+            switch (e.KeyChar) {
+                case (char)Keys.Enter:
+                    Update.PerformClick();
+
+                    break;
+
+                case (char)Keys.Escape:
+                    exitToolStripMenuItem.PerformClick();
+
+                    break;
+            }
+        }
+
         public Game(int difficulty) {
             InitializeComponent();
             
@@ -68,9 +83,16 @@ namespace Guess_Number {
         }
 
         private void Update_Click(object sender, EventArgs e) {
-            //Добавить проверку на то, парсится ли строка в число.
+            int number = 0;
 
-            int number = Convert.ToInt32(Current_Number.Text);
+            try {
+                number = Convert.ToInt32(Current_Number.Text);
+            } catch (System.FormatException) {
+                Current_Number.Clear();
+                Current_Number.Focus();
+                
+                return;
+            }
 
             if ((number < 1)) {
                 MessageBox.Show($"Your number: {number} < 1");

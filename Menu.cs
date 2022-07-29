@@ -23,5 +23,19 @@ namespace Guess_Number {
             if (result == DialogResult.Yes)
                 this.Close();
         }
+
+        private void Difficulty_Choice_KeyPress(object sender, KeyPressEventArgs e) {
+            switch (e.KeyChar) {
+                case (char)Keys.Enter:
+                    startToolStripMenuItem.PerformClick();
+
+                    break;
+
+                case (char)Keys.Escape:
+                    exitToolStripMenuItem.PerformClick();
+
+                    break;
+            }
+        }
     }
 }
