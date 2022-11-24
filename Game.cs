@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace Guess_Number {
     public partial class Game : Form {
@@ -17,7 +18,6 @@ namespace Guess_Number {
             avg_tries = 0,
             max_tries = 0,
             min_tries = 100,
-            min_tries_tmp = 0,
             
             score = 0,
             
@@ -25,23 +25,21 @@ namespace Guess_Number {
             
             win_num;
 
+        string
+            fileName = "GameSave.json",
+            JSON_Str,
+            
+            info = "",
+            usedNums = "";
+
+        bool
+            isGameSaved = false;
+
+        DialogResult result;
+
         Random rnd = new Random();
 
-        private void Current_Number_KeyPress(object sender, KeyPressEventArgs e) {
-            switch (e.KeyChar) {
-                case (char)Keys.Enter:
-                    Update.PerformClick();
-
-                    break;
-
-                case (char)Keys.Escape:
-                    exitToolStripMenuItem.PerformClick();
-
-                    break;
-            }
-        }
-
-        public Game(int difficulty) {
+        public Game(int difficulty, bool isLoadGame, string _fileName = "") {
             InitializeComponent();
             
             switch (difficulty) {
@@ -80,6 +78,25 @@ namespace Guess_Number {
             Tries_min_text.Text = "0";
 
             win_num = rnd.Next(1,100);
+
+            if (isLoadGame) {
+                fileName = _fileName;
+                loadToolStripMenuItem.PerformClick();
+            }
+        }
+        private void Current_Number_KeyPress(object sender, KeyPressEventArgs e) {
+            switch (e.KeyChar) {
+                case (char)Keys.Enter:
+                    Update.PerformClick();
+                    isGameSaved = false;
+
+                    break;
+
+                case (char)Keys.Escape:
+                    exitToolStripMenuItem.PerformClick();
+
+                    break;
+            }
         }
 
         private void Update_Click(object sender, EventArgs e) {
@@ -167,7 +184,7 @@ namespace Guess_Number {
                 MessageBox.Show(
                     $"You loose. \r\n\r\nScore: {score} \r\nLives: {lives} \r\nTries(local): " +
                     $"{tries_local} \r\nTries(global): {tries_global}" +
-                    $"\r\nTries(AVG) {avg_tries} \r\nTries(max) {max_tries} \r\n Tries(min) {min_tries}"
+                    $"\r\nTries(AVG): {avg_tries} \r\nTries(max): {max_tries} \r\n Tries(min): {min_tries}"
                     ,
                     "Game over", MessageBoxButtons.OK);
 
@@ -182,11 +199,87 @@ namespace Guess_Number {
             Current_Number.Focus();
         }
 
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e) {
+            fileName = "GameSave.json";
+
+            info = Info_text.Text;
+            usedNums = usedNums_text.Text;
+
+            GameStatus status = new GameStatus(lives, tries_global, tries_local, avg_tries, max_tries, min_tries, score, info, usedNums);
+
+
+            saveFileDialog.FileName = fileName;
+            saveFileDialog.Filter = "JSON Files|*.json";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK) {
+                JSON_Str = JsonConvert.SerializeObject(status);
+
+                fileName = saveFileDialog.FileName;
+
+                File.WriteAllText(fileName, JSON_Str);
+
+                isGameSaved = true;
+            }
+        }
+
+        
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e) {
+            openFileDialog.FileName = fileName;
+            openFileDialog.Filter = "JSON Files|*.json";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                fileName = openFileDialog.FileName;
+
+                JSON_Str = File.ReadAllText(fileName);
+
+                GameStatus status = JsonConvert.DeserializeObject<GameStatus>(JSON_Str);
+
+                lives = status.lives;
+                Lives_text.Text = lives.ToString();
+                score = status.score;
+                Score_text.Text = score.ToString();
+
+                tries_local = status.tries_local;
+                Tries_l_text.Text = tries_local.ToString();
+                tries_global = status.tries_global;
+                Tries_g_text.Text = tries_global.ToString();
+
+                avg_tries = status.avg_tries;
+                Tries_avg_text.Text = avg_tries.ToString();
+                max_tries = status.max_tries;
+                Tries_max_text.Text = max_tries.ToString();
+                min_tries = status.min_tries;
+                Tries_min_text.Text = min_tries.ToString();
+
+                info = status.info;
+                Info_text.Text = info;
+                usedNums = status.usedNums;
+                usedNums_text.Text = usedNums;
+            }
+        }
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
-            DialogResult result = MessageBox.Show("Do You want to return to the Menu?", "Game", MessageBoxButtons.YesNo);
-            
-            if (result == DialogResult.Yes)
-                this.Close();
+            if (isGameSaved)
+                result = MessageBox.Show("Do you want to return to the Menu?", "Game", MessageBoxButtons.YesNoCancel);
+            else
+                result = MessageBox.Show("Exit without saving?", "Game", MessageBoxButtons.YesNoCancel);
+                
+
+                switch (result) {
+                    case DialogResult.Yes:
+                        this.Close();
+
+                        break;
+
+                    case DialogResult.No:
+                        if (!isGameSaved)
+                            saveToolStripMenuItem.PerformClick();
+                        
+                        break;
+
+                    case DialogResult.Cancel:
+                        return;
+                }
         }
     }
 }

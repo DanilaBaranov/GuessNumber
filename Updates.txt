@@ -14,5 +14,6 @@
 - Added "Enter" and "Escape" pushing in "number" and "difficulty" textboxes.
 - Added full check of number type in "number" textbox.
 
-Plans:
-- Add function of saving results to the text file.
+1.3 - 24.11.2022 19.15
+- Added function of saving and loading game progress by JSON file.
+- Fixed output text if game over.
